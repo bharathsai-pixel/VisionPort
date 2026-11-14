@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101a20">
+  <title>VisionPort — Traffic Intelligence</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <a class="brand" href="/" aria-label="VisionPort home"><span class="brand-mark">V<span>•</span></span><span>vision<span class="brand-light">port</span><small>TRAFFIC INTELLIGENCE</small></span></a>
+    <div class="side-caption">WORKSPACE</div>
+    <a class="nav-item active" href="#workspace"><span class="nav-icon">▦</span> Detection studio</a>
+    <div class="side-note"><span class="pulse"></span> Local analysis engine <span class="online">READY</span></div>
+    <div class="sidebar-bottom"><div class="tiny-label">POWERED BY</div><div class="tech">YOLOv8n <span>·</span> OpenCV</div><p>Vehicle intelligence for the roads ahead.</p></div>
+  </aside>
+
+  <main id="workspace">
+    <header class="topbar"><div class="crumb">Workspace <span>/</span> <strong>Detection studio</strong></div><div class="top-status"><span class="pulse"></span> SYSTEM READY</div></header>
+    <section class="intro"><div><div class="eyebrow">VISIONPORT ANALYTICS <span>·</span> VEHICLE MONITORING</div><h1>See the flow.<br><em>Understand the road.</em></h1><p class="lede">Turn traffic footage into clear, actionable vehicle intelligence.</p></div><div class="intro-art" aria-hidden="true"><div class="art-ring ring-one"></div><div class="art-ring ring-two"></div><div class="road-line"></div><div class="art-coordinate">37°46'49.2"N<br>122°25'09.8"W</div><div class="art-tag">LIVE ANALYSIS</div></div></section>
+
+    <section class="content-grid">
+      <section class="panel upload-panel">
+        <div class="panel-head"><div><div class="eyebrow">01 / INPUT SOURCE</div><h2>Choose your footage</h2></div><span class="secure">LOCAL PROCESSING</span></div>
+        <div class="tabs" role="tablist"><button class="tab active" data-mode="image" role="tab" aria-selected="true">▧ &nbsp; Image</button><button class="tab" data-mode="video" role="tab" aria-selected="false">▷ &nbsp; Video</button><button class="tab" data-mode="camera" role="tab" aria-selected="false">CAM &nbsp; Live Camera</button></div>
+        <form id="upload-form">
+          <label class="dropzone" id="dropzone" for="file-input"><input id="file-input" type="file" accept="image/jpeg,image/png,image/webp,image/bmp"><span class="upload-glyph">↑</span><strong>Drop your file here</strong><span class="drop-copy">or <u>browse files</u> from your computer</span><span class="file-hint" id="file-hint">JPG, PNG, WEBP up to 100 MB</span></label>
+          <div class="selected-file" id="selected-file" hidden><span class="file-icon">▧</span><span id="file-name"></span><button type="button" id="clear-file" aria-label="Remove file">×</button></div>
+          <button class="primary-button" id="analyze-button" type="submit" disabled><span>Analyze traffic</span><span class="button-arrow">↗</span></button>
+        </form>
+        <section class="camera-panel" id="camera-panel" hidden aria-label="Live camera controls">
+          <div class="camera-preview"><video id="camera-video" autoplay muted playsinline aria-label="Live webcam preview"></video><span id="camera-placeholder">Camera preview will appear here</span></div>
+          <canvas id="camera-canvas" hidden></canvas>
+          <div class="camera-actions"><button class="primary-button" id="start-camera" type="button">Start Camera</button><button class="primary-button" id="capture-image" type="button" disabled>Capture Image</button><button class="secondary-button" id="stop-camera" type="button" disabled>Stop Camera</button></div>
+          <p class="camera-message" id="camera-message" role="status">Allow camera access when your browser asks.</p>
+        </section>
+        <div class="privacy-note"><span>◈</span> Your uploads are analyzed locally and removed after processing.</div>
+      </section>
+
+      <section class="panel results-panel" id="results-panel">
+        <div class="panel-head"><div><div class="eyebrow">02 / ANALYSIS</div><h2>Detection results</h2></div><span class="result-state" id="result-state"><i></i> AWAITING INPUT</span></div>
+        <div class="empty-state" id="empty-state"><div class="empty-visual"><div class="scan-corner tl"></div><div class="scan-corner tr"></div><div class="scan-corner bl"></div><div class="scan-corner br"></div><span>◉</span><div class="scan-line"></div></div><strong>Your results will appear here</strong><p>Upload an image or video to begin vehicle analysis.</p></div>
+        <div class="loading-state" id="loading-state" hidden><div class="loader"></div><strong id="loading-title">Analyzing your image</strong><p id="loading-copy">YOLO is identifying vehicles in your footage.</p><div class="progress-track"><span></span></div></div>
+        <div class="error-state" id="error-state" hidden><span>!</span><strong>Analysis could not be completed</strong><p id="error-message"></p></div>
+        <div class="result-content" id="result-content" hidden>
+          <div class="preview-wrap image-wrap" id="image-preview-wrap" hidden><img id="image-preview" alt="Traffic image with YOLO vehicle detections"><a class="download-link" id="image-download-link" download="visionport-detection.jpg">↓ &nbsp; Download annotated image</a></div>
+          <div class="preview-wrap video-wrap" id="video-preview-wrap" hidden><video id="video-preview" controls playsinline></video><a class="download-link" id="download-link" download>↓ &nbsp; Download annotated video</a></div>
+          <div class="stats-row"><div class="stat-card total-card"><span class="stat-label">TOTAL VEHICLES</span><strong id="total-count">0</strong><span class="stat-foot">detected in this <span id="scope-label">image</span></span></div><div class="stat-card density-card"><span class="stat-label">TRAFFIC DENSITY</span><strong class="density-value" id="density">LOW</strong><span class="stat-foot" id="density-foot">Based on this frame</span></div></div>
+          <div class="class-section"><div class="section-title">VEHICLE BREAKDOWN <span id="frame-meta"></span></div><div class="class-grid"><div class="class-item"><span class="class-dot car"></span><span>Cars</span><strong id="count-car">0</strong></div><div class="class-item"><span class="class-dot moto"></span><span>Motorcycles</span><strong id="count-motorcycle">0</strong></div><div class="class-item"><span class="class-dot bus"></span><span>Buses</span><strong id="count-bus">0</strong></div><div class="class-item"><span class="class-dot truck"></span><span>Trucks</span><strong id="count-truck">0</strong></div></div></div>
+          <div class="detections-section" id="detections-section"><div class="section-title">DETECTIONS <span id="detection-total">0 OBJECTS</span></div><div class="detection-list" id="detection-list"></div></div>
+        </div>
+      </section>
+    </section>
+    <footer><span>VISIONPORT <span class="footer-dot">●</span> INTELLIGENT TRAFFIC MONITORING</span><span>AI-POWERED ROAD INSIGHT</span></footer>
+  </main>
+  <div class="toast" id="toast" role="status"></div>
+  <script src="/static/app.js" defer></script>
+</body>
+</html>
